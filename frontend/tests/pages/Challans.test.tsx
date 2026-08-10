@@ -15,15 +15,6 @@ vi.mock('../../src/api/challan.api', () => ({
   },
 }));
 
-// Mock ResizeObserver for Recharts (if used in Challans, or just in case)
-if (!global.ResizeObserver) {
-  global.ResizeObserver = class {
-    observe() {}
-    unobserve() {}
-    disconnect() {}
-  };
-}
-
 const queryClient = new QueryClient({
   defaultOptions: { queries: { retry: false } },
 });

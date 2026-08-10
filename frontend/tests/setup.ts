@@ -2,11 +2,11 @@ import '@testing-library/jest-dom';
 import { vi } from 'vitest';
 
 // Mock ResizeObserver for Recharts
-global.ResizeObserver = class ResizeObserver {
+vi.stubGlobal('ResizeObserver', class ResizeObserver {
   observe() {}
   unobserve() {}
   disconnect() {}
-};
+});
 
 // Mock matchMedia for Radix UI
 Object.defineProperty(window, 'matchMedia', {

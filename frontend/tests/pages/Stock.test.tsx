@@ -12,15 +12,6 @@ vi.mock('../../src/api/stock.api', () => ({
   },
 }));
 
-// Mock ResizeObserver for Recharts (if used in Stock, or just in case)
-if (!global.ResizeObserver) {
-  global.ResizeObserver = class {
-    observe() {}
-    unobserve() {}
-    disconnect() {}
-  };
-}
-
 const queryClient = new QueryClient({
   defaultOptions: { queries: { retry: false } },
 });
