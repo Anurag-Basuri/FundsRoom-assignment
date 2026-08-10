@@ -104,13 +104,13 @@ export const customerService = {
     const followUp = await FollowUp.create({
       customer_id: customerId,
       note: data.note,
-      follow_up_date: data.follow_up_date || null,
+      follow_up_date: (data.follow_up_date || null) as any,
       created_by: userId,
     });
 
     // Update the customer's next follow-up date
     if (data.follow_up_date) {
-      await customer.update({ follow_up_date: data.follow_up_date });
+      await customer.update({ follow_up_date: data.follow_up_date as any });
     }
 
     return followUp;

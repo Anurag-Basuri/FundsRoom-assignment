@@ -43,7 +43,7 @@ export const userService = {
       }
     }
 
-    await user.update(data);
+    await user.update(data as any);
     return user.toSafeJSON();
   },
 
