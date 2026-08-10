@@ -20,10 +20,13 @@ axiosInstance.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Response Interceptor: handle 401 refresh
+// Response Interceptor: handle 401 refresh and log errors
 axiosInstance.interceptors.response.use(
   (response) => response,
   async (error) => {
+    // Log the error for debugging
+    console.error('[Axios Error]', error.message, error.response?.data || error);
+
     const originalRequest = error.config;
 
     // Avoid infinite loop if refresh fails

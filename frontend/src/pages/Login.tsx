@@ -43,7 +43,23 @@ const Login = () => {
       toast.success('Logged in successfully');
       navigate('/');
     } catch (error: any) {
-      toast.error(error.response?.data?.message || 'Login failed');
+      console.error('[Login Error]', error);
+      
+      let humanMessage = 'Login failed. Please try again later.';
+      
+      if (error.response) {
+        // The server responded with a status code outside the 2xx range
+        if (error.response.status === 401) {
+          humanMessage = 'Incorrect email or password. Please verify your credentials and try again.';
+        } else {
+          humanMessage = error.response.data?.message || 'Server returned an error. Please try again.';
+        }
+      } else if (error.request) {
+        // The request was made but no response was received (network error, CORS, etc.)
+        humanMessage = 'Network error: Unable to connect to the server. Please check your internet connection or the server status.';
+      }
+
+      toast.error(humanMessage);
     } finally {
       setIsLoading(false);
     }

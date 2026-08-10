@@ -4,6 +4,9 @@ import { logger } from '../utils/logger';
 import { env } from '../config/env';
 
 export const errorHandler = (err: Error, _req: Request, res: Response, _next: NextFunction): void => {
+  // Always log the error on the backend so we know what is going wrong
+  logger.error(`[Error Handler] ${err.name}: ${err.message}`, { stack: err.stack });
+
   if (err instanceof AppError) {
     res.status(err.statusCode).json({
       success: false,
@@ -32,9 +35,6 @@ export const errorHandler = (err: Error, _req: Request, res: Response, _next: Ne
     });
     return;
   }
-
-  // Unexpected errors
-  logger.error('Unhandled error:', err);
 
   res.status(500).json({
     success: false,
