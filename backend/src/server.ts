@@ -19,8 +19,8 @@ const start = async (): Promise<void> => {
     // Connect to database
     await connectDB();
 
-    // Sync database (creates tables if they don't exist)
-    await sequelize.sync({ alter: env.NODE_ENV === 'development' });
+    // Sync database (creates tables if they don't exist, without slow altering on every restart)
+    await sequelize.sync();
     logger.info('📦 Database synchronized');
 
     // Start listening
