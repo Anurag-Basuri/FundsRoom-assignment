@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { io, Socket } from 'socket.io-client';
-import { useAuthStore } from './store/authStore';
+import { useAuthStore } from '../store/authStore';
 import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
@@ -22,7 +22,7 @@ export const useSocket = () => {
         console.log('Socket connected');
       });
 
-      socket.on('stock:updated', (data) => {
+      socket.on('stock:updated', () => {
         queryClient.invalidateQueries({ queryKey: ['products'] });
         queryClient.invalidateQueries({ queryKey: ['products-list'] });
         queryClient.invalidateQueries({ queryKey: ['stock-movements'] });
