@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { customerApi } from '@/api/customer.api';
-import { useAuthStore } from '@/store/authStore';
+import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { customerApi } from "@/api/customer.api";
+import { useAuthStore } from "@/store/authStore";
 import {
   Table,
   TableBody,
@@ -9,27 +9,27 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Plus, Search } from 'lucide-react';
-import CustomerDialog from './CustomerDialog';
-import { Customer } from '@/types/customer.types';
+} from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Plus, Search } from "lucide-react";
+import CustomerDialog from "@/components/customers/CustomerDialog";
+import type { Customer } from "@/types/customer.types";
 
 const Customers = () => {
   const { user } = useAuthStore();
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingCustomer, setEditingCustomer] = useState<Customer | null>(null);
 
   const { data, isLoading, refetch } = useQuery({
-    queryKey: ['customers', page, search],
+    queryKey: ["customers", page, search],
     queryFn: () => customerApi.list({ page, search }),
   });
 
-  const canEdit = user?.role === 'Admin' || user?.role === 'Sales';
+  const canEdit = user?.role === "Admin" || user?.role === "Sales";
 
   const handleEdit = (customer: Customer) => {
     setEditingCustomer(customer);
@@ -44,7 +44,9 @@ const Customers = () => {
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold tracking-tight">Customers Management</h2>
+        <h2 className="text-2xl font-bold tracking-tight">
+          Customers Management
+        </h2>
         {canEdit && (
           <Button onClick={handleCreate}>
             <Plus className="mr-2 h-4 w-4" /> Add Customer
@@ -79,13 +81,19 @@ const Customers = () => {
           <TableBody>
             {isLoading ? (
               <TableRow>
-                <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
+                <TableCell
+                  colSpan={6}
+                  className="text-center py-8 text-muted-foreground"
+                >
                   Loading customers...
                 </TableCell>
               </TableRow>
             ) : data?.data.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
+                <TableCell
+                  colSpan={6}
+                  className="text-center py-8 text-muted-foreground"
+                >
                   No customers found.
                 </TableCell>
               </TableRow>
@@ -93,20 +101,29 @@ const Customers = () => {
               data?.data.map((customer) => (
                 <TableRow key={customer.id}>
                   <TableCell className="font-medium">{customer.name}</TableCell>
-                  <TableCell>{customer.business_name || '-'}</TableCell>
+                  <TableCell>{customer.business_name || "-"}</TableCell>
                   <TableCell>{customer.mobile}</TableCell>
                   <TableCell>{customer.customer_type}</TableCell>
                   <TableCell>
-                    <Badge variant={
-                      customer.status === 'Active' ? 'default' :
-                      customer.status === 'Lead' ? 'secondary' : 'destructive'
-                    }>
+                    <Badge
+                      variant={
+                        customer.status === "Active"
+                          ? "default"
+                          : customer.status === "Lead"
+                            ? "secondary"
+                            : "destructive"
+                      }
+                    >
                       {customer.status}
                     </Badge>
                   </TableCell>
                   <TableCell className="text-right">
                     {canEdit && (
-                      <Button variant="outline" size="sm" onClick={() => handleEdit(customer)}>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleEdit(customer)}
+                      >
                         Edit
                       </Button>
                     )}
@@ -127,7 +144,7 @@ const Customers = () => {
             variant="outline"
             size="sm"
             disabled={page === 1}
-            onClick={() => setPage(p => p - 1)}
+            onClick={() => setPage((p) => p - 1)}
           >
             Previous
           </Button>
@@ -135,16 +152,16 @@ const Customers = () => {
             variant="outline"
             size="sm"
             disabled={!data?.meta.totalPages || page === data?.meta.totalPages}
-            onClick={() => setPage(p => p + 1)}
+            onClick={() => setPage((p) => p + 1)}
           >
             Next
           </Button>
         </div>
       </div>
 
-      <CustomerDialog 
-        open={dialogOpen} 
-        onOpenChange={setDialogOpen} 
+      <CustomerDialog
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
         customer={editingCustomer}
         onSuccess={() => {
           setDialogOpen(false);

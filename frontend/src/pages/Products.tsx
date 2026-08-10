@@ -103,7 +103,9 @@ const Products = () => {
                       <div className="flex items-center space-x-2">
                         <span>{product.current_stock}</span>
                         {isLowStock && (
-                          <AlertTriangle className="h-4 w-4 text-destructive" title="Low Stock!" />
+                          <span title="Low Stock!">
+                            <AlertTriangle className="h-4 w-4 text-destructive" />
+                          </span>
                         )}
                       </div>
                     </TableCell>

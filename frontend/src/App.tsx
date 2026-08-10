@@ -1,3 +1,4 @@
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { useAuthStore } from './store/authStore';
 import { Toaster } from 'sonner';
@@ -16,7 +17,7 @@ import Challans from './pages/Challans';
 import NotFound from './pages/NotFound';
 
 // Protect Route wrapper
-const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
+const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { accessToken } = useAuthStore();
   if (!accessToken) {
     return <Navigate to="/login" replace />;
@@ -25,7 +26,7 @@ const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
 };
 
 // Redirect to dashboard if logged in
-const PublicRoute = ({ children }: { children: JSX.Element }) => {
+const PublicRoute = ({ children }: { children: React.ReactNode }) => {
   const { accessToken } = useAuthStore();
   if (accessToken) {
     return <Navigate to="/" replace />;
